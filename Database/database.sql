@@ -11,7 +11,7 @@ CREATE TABLE `personas` (
 	`segundo_apellido` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
 	`documento` INT(10) NOT NULL,
 	`id_tipo_documento` INT(10) NOT NULL,
-	`id_sexo` INT(10) NULL DEFAULT NULL,
+	`id_sexo` INT(10) NOT NULL,
 	`id_grupo_sanguineo` INT(10) NOT NULL,
 	`id_factor_sanguineo` INT(10) NOT NULL,
 	PRIMARY KEY (`id`) USING BTREE,
@@ -31,7 +31,7 @@ ENGINE=InnoDB
 /* tabla de tipo_documento */
 CREATE TABLE `tipo_documento` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
-	`tipo_documento` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`tipo_documento` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	PRIMARY KEY (`id`) USING BTREE
 )
 COLLATE='utf8mb4_unicode_ci'
@@ -52,7 +52,7 @@ ENGINE=InnoDB
 /* tabla de grupo_sanguineo */
 CREATE TABLE `grupo_sanguineo` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
-	`tipo_grupo` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`tipo_grupo` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	PRIMARY KEY (`id`) USING BTREE
 )
 COLLATE='utf8mb4_unicode_ci'
@@ -62,7 +62,7 @@ ENGINE=InnoDB
 /* tabla de factor_sanguineo */
 CREATE TABLE `factor_sanguineo` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
-	`tipo_factor` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`tipo_factor` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	PRIMARY KEY (`id`) USING BTREE
 )
 COLLATE='utf8mb4_unicode_ci'
@@ -72,7 +72,7 @@ ENGINE=InnoDB
 /* tabla de programa formacion  */
 CREATE TABLE `programa_formacion` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
-	`nombre_programa` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8mb4_unicode_ci',
+	`nombre_programa` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	PRIMARY KEY (`id`) USING BTREE
 )
 COLLATE='utf8mb4_unicode_ci'
@@ -80,18 +80,14 @@ ENGINE=InnoDB
 ;
 
 
-
 /*tabla aprendeices*/
 CREATE TABLE `aprendices` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
 	`id_persona` INT(10) NOT NULL,
 	`id_formacion` INT(10) NOT NULL,
-	`id_ficha` INT(10) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `id_persona` (`id_persona`) USING BTREE,
 	INDEX `id_formacion` (`id_formacion`) USING BTREE,
-	INDEX `id_ficha` (`id_ficha`) USING BTREE,
-	CONSTRAINT `id_ficha` FOREIGN KEY (`id_ficha`) REFERENCES `ficha_programa` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
 	CONSTRAINT `id_formacion` FOREIGN KEY (`id_formacion`) REFERENCES `programa_formacion` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
 	CONSTRAINT `id_persona` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
