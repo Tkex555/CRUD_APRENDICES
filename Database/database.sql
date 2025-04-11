@@ -15,6 +15,7 @@ CREATE TABLE `personas` (
 	`id_grupo_sanguineo` INT(10) NOT NULL,
 	`id_factor_sanguineo` INT(10) NOT NULL,
 	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `documento` (`documento`) USING BTREE,
 	INDEX `FK_personas_grupo_sanguineo` (`id_grupo_sanguineo`) USING BTREE,
 	INDEX `id_factor_sanguineo` (`id_factor_sanguineo`) USING BTREE,
 	INDEX `id_tipo_documento` (`id_tipo_documento`) USING BTREE,
@@ -27,6 +28,7 @@ CREATE TABLE `personas` (
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
 ;
+
 
 /* tabla de tipo_documento */
 CREATE TABLE `tipo_documento` (
