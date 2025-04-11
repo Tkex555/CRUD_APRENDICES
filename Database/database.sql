@@ -80,15 +80,6 @@ ENGINE=InnoDB
 ;
 
 
-/* tabla de ficha */
-CREATE TABLE `ficha_programa` (
-	`id` INT(10) NOT NULL AUTO_INCREMENT,
-	`numero_ficha` INT(10) NOT NULL DEFAULT '0',
-	PRIMARY KEY (`id`) USING BTREE
-)
-COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB
-;
 
 /*tabla aprendeices*/
 CREATE TABLE `aprendices` (
