@@ -29,7 +29,7 @@
                         </thead>
                         <tbody>
                             <?php
-                            include 'conexion.php';
+                            include 'Database/conexion.php';
                             $sql = "SELECT * FROM aprendices";
                             $resultado = mysqli_query($conexion, $sql);
                             $contador = 1;
