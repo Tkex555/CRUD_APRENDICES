@@ -1,7 +1,7 @@
 <?php
 
 $server = "localhost";
-$database = "prueba_db";
+$database = "prueba_sena";
 $usuario = "root";
 $contrasenia = "";
 
