@@ -26,10 +26,16 @@ class aprendiz {
 
     public function obtenerAprendices() {
         try {
-            $sql = "SELECT aprendices.*, personas.* 
-                    FROM aprendices 
-                    INNER JOIN personas 
-                    ON aprendices.numero_documento = personas.numero_documento";
+            $sql = "SELECT 
+                        aprendices.id AS id_aprendiz,
+                        personas.primer_nombre,
+                        personas.segundo_nombre,
+                        personas.primer_apellido,
+                        personas.segundo_apellido,
+                        personas.id AS id_persona
+                    FROM aprendices
+                    INNER JOIN personas ON aprendices.id_persona = personas.id";
+            
             $resultado = mysqli_query($this->conexion, $sql);
             return $resultado;
         } catch (Exception $e) {
@@ -37,4 +43,5 @@ class aprendiz {
             return false;
         }
     }
+    
 }
