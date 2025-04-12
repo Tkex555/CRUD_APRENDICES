@@ -1,18 +1,17 @@
 <?php
 
-$server = "localhost";
-$database = "prueba_sena";
-$usuario = "root";
-$contrasenia = "";
+class db{
+    private $server = "localhost";
+    private $database = "prueba_sena";
+    private $usuario = "root";
+    private $contrasenia = "";
 
-$conexion = mysqli_connect($server, $usuario, $contrasenia, $database);
-
-try {
-    if (!$conexion) {
-        throw new Exception("Error de conexión: " . mysqli_connect_error());
-    } else {
-        // echo "Conexión exitosa a la base de datos.";
+    public function conexion (){
+        try{
+            $PDO = new PDO("mysql:host=$this->server;dbname=$this->database", $this->usuario, $this->contrasenia);
+            return $PDO;
+        }catch(PDOException $e){
+            echo "Error de conexión: " . $e->getMessage();
+        }
     }
-} catch (Exception $e) {
-    echo $e->getMessage();
 }
