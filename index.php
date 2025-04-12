@@ -1,13 +1,24 @@
+<?php
+include 'Database/conexion.php'; // Archivo de conexión
+require_once 'Controllers/aprendizController.php'; // Controlador
+
+// Establecer la zona horaria de Colombia (UTC-5)
+date_default_timezone_set('America/Bogota');
+
+$aprendizController = new aprendiz($conexion);
+$aprendices = $aprendizController->obtenerAprendices();
+
+$contador = 1;
+?>
+
 <!doctype html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SENA || Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
     <div class="container">
         <div class="container-fluid">
@@ -29,35 +40,36 @@
                         </thead>
                         <tbody>
                             <?php
-                            include 'Database/conexion.php';
-                            $sql = "SELECT * FROM aprendices";
-                            $resultado = mysqli_query($conexion, $sql);
-                            $contador = 1;
+                            if ($aprendices && mysqli_num_rows($aprendices) > 0) {
+                                while ($row = mysqli_fetch_assoc($aprendices)) {
+                                    $id = $row['id_aprendiz'];
+                                    $nombre = $row['primer_nombre'] . ' ' . $row['segundo_nombre'] . ' ' . $row['primer_apellido'] . ' ' . $row['segundo_apellido'];
+                                    $fecha_nacimiento = $row['fecha_nacimiento'] ?? null;
 
-                            while ($row = mysqli_fetch_array($resultado)) {
-                                $id = $row['id'];
-                                $nombre = $row['nombre'];
-                                $fecha_nacimiento = $row['fecha_nacimiento'];
-                                $obj = new DateTime($fecha_nacimiento);
-                                $hoy = new DateTime();
-                                $edad = $hoy->diff($obj)->y; // Calcular la edad
+                                    // Validar y calcular edad
+                                    if ($fecha_nacimiento) {
+                                        $obj = new DateTime($fecha_nacimiento);
+                                        $hoy = new DateTime();
+                                        $edad = $hoy->diff($obj)->y;
+                                    } else {
+                                        $edad = "N/D";
+                                    }
 
-                                echo "<tr class='text-center'>";
-                                echo "<th scope='row'>$contador</th>";
-                                echo "<td>$nombre</td>";
-                                echo "<td>$edad años</td>";
-                                echo "<td>";
-                                echo "<a href='ver.php?id=$id&nombre=$nombre' class='btn btn-info btn-sm'>Ver</a>";
-                                echo "</td>";
-                                echo "<td>";
-                                echo "<a href='editar.php?id=$id' class='btn btn-warning btn-sm'>Editar</a>";
-                                echo "</td>";
-                                echo "<td>";
-                                echo "<a href='delete.php?id=$id' class='btn btn-danger btn-sm'>Eliminar</a>";
-                                echo "</td>";
-                                echo "</tr>";
-                                $contador++;
+                                    echo "<tr class='text-center'>";
+                                    echo "<th scope='row'>$contador</th>";
+                                    echo "<td>$nombre</td>";
+                                    echo "<td>$edad años</td>";
+                                    echo "<td><a href='ver.php?id=$id' class='btn btn-info btn-sm'>Ver</a></td>";
+                                    echo "<td><a href='editar.php?id=$id' class='btn btn-warning btn-sm'>Editar</a></td>";
+                                    echo "<td><a href='delete.php?id=$id' class='btn btn-danger btn-sm'>Eliminar</a></td>";
+                                    echo "</tr>";
+
+                                    $contador++;
+                                }
+                            } else {
+                                echo "<tr><td colspan='6' class='text-center'>No hay aprendices registrados.</td></tr>";
                             }
+
                             mysqli_close($conexion);
                             ?>
                         </tbody>
@@ -67,8 +79,6 @@
         </div>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

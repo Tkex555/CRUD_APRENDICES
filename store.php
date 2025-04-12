@@ -1,11 +1,16 @@
 <?php
 
-include 'conexion.php';
+include 'Database/conexion.php'; 
 
-$nombre = $_POST['nombre'];
+$primerNombre = $_POST['primer_nombre'];
+$segundoNombre = $_POST['segundo_nombre'];
+$primerApellido = $_POST['primer_apellido'];
+$segundoApellido = $_POST['segundo_apellido'];
 $fecha_nacimiento = $_POST['fecha_nacimiento'];
+$documento = $_POST['documento'];
 
-$sql = "INSERT INTO aprendices (nombre, fecha_nacimiento) VALUES ('$nombre', '$fecha_nacimiento')";
+
+$sql = "INSERT INTO aprendices ($primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $documento) VALUES ('$primerNombre', '$segundoNombre', '$primerApellido', '$segundoApellido', '$documento')";
 $resultado = mysqli_query($conexion, $sql);
 
 if ($resultado) {

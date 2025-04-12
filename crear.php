@@ -13,10 +13,22 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <h1>Editar Aprendiz</h1>
+                    <h1>Crear Aprendiz</h1>
                     <form action="store.php" method="post">
                         <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
+                            <label for="nombre" class="form-label">Primer_nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Segundo_nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Primer_apellido</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Segundo_apellido</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" value="">
                         </div>
                         <div class="mb-3">
