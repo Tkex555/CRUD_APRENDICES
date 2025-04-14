@@ -1,27 +1,24 @@
 <?php
-require_once("c://laragon/www/CRUD_APRENDICES/Views/head/footer.php"); // Incluir el archivo de cabecera
 
-require_once __DIR__ . '/../../Database/conexion.php'; // Incluir la clase de conexión
+require_once("c://laragon/www/CRUD_APRENDICES/Views/head/footer.php");
 
-// Establecer la zona horaria de Colombia
+require_once __DIR__ . '/../../Database/conexion.php';
+
 date_default_timezone_set('America/Bogota');
 
-// Crear instancia de la clase db y obtener la conexión
 $db = new db();
 $conexion = $db->conexion();
 
-// Verificar si la conexión fue exitosa
 if ($conexion === null) {
     die("Error de conexión a la base de datos.");
 }
 
-// Realizar la consulta a la base de datos
-$query = "SELECT a.id, p.primer_nombre, p.primer_apellido, p.fecha_nacimiento, a.formacion 
+$query = "SELECT a.id, p.primer_nombre, p.primer_apellido, p.fecha_nacimiento, f.nombre_programa
           FROM aprendices a
-          JOIN personas p ON a.id_persona = p.id_persona";
+          INNER JOIN personas p ON a.id_persona = p.id
+          INNER JOIN programa_formacion f ON a.id_formacion = f.id";
 
 $aprendices = $conexion->query($query);
-
 $contador = 1;
 ?>
 
@@ -32,6 +29,8 @@ $contador = 1;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SENA || Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CDN de FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -40,7 +39,9 @@ $contador = 1;
                 <div class="col">
                     <h1 class="text-center">Lista de Aprendices</h1>
                     <div class="text-center mb-3">
-                        <a href="Views/crear.php" class="btn btn-sm btn-primary">Crear Aprendiz</a>
+                        <a href="../aprendiz/crear.php" class="btn btn-sm btn-primary">
+                            <i class="fas fa-user-plus"></i> Crear Aprendiz
+                        </a>
                     </div>
 
                     <table class="table table-sm table-hover table-responsive">
@@ -59,15 +60,14 @@ $contador = 1;
                                 while ($row = $aprendices->fetch(PDO::FETCH_ASSOC)) {
                                     $id = $row['id'];
                                     $nombre = $row['primer_nombre'] . ' ' . $row['primer_apellido'];
-                                    $fecha_nacimiento = $row['fecha_nacimiento'] ?? null;
-                                    $programa_formacion = $row['formacion'];
+                                    $fecha_nacimiento = $row['fecha_nacimiento'];
+                                    $programa_formacion = $row['nombre_programa'];
 
+                                    $edad = "N/D";
                                     if ($fecha_nacimiento) {
-                                        $obj = new DateTime($fecha_nacimiento);
+                                        $fecha_nacimiento_dt = new DateTime($fecha_nacimiento);
                                         $hoy = new DateTime();
-                                        $edad = $hoy->diff($obj)->y;
-                                    } else {
-                                        $edad = "N/D";
+                                        $edad = $hoy->diff($fecha_nacimiento_dt)->y;
                                     }
 
                                     echo "<tr class='text-center'>";
@@ -75,28 +75,45 @@ $contador = 1;
                                     echo "<td>$nombre</td>";
                                     echo "<td>$edad años</td>";
                                     echo "<td>$programa_formacion</td>";
-                                    echo "<td><a href='ver.php?id=$id' class='btn btn-info btn-sm'>Ver</a></td>";
-                                    echo "<td><a href='editar.php?id=$id' class='btn btn-warning btn-sm'>Editar</a></td>";
-                                    echo "<td><a href='delete.php?id=$id' class='btn btn-danger btn-sm'>Eliminar</a></td>";
+                                    // Agregar los iconos a los botones
+                                    echo "<td><a href='ver.php?id=$id' class='btn btn-info btn-sm'>
+                                            <i class='fas fa-eye'></i> Ver
+                                          </a></td>";
+                                    echo "<td><a href='editar.php?id=$id' class='btn btn-warning btn-sm'>
+                                            <i class='fas fa-edit'></i> Editar
+                                          </a></td>";
+                                    echo "<td><a href='delete.php?id=$id' class='btn btn-danger btn-sm'>
+                                            <i class='fas fa-trash-alt'></i> Eliminar
+                                          </a></td>";
                                     echo "</tr>";
 
                                     $contador++;
                                 }
                             } else {
-                                echo "<tr><td colspan='6' class='text-center'>No hay aprendices registrados.</td></tr>";
+                                echo "<tr><td colspan='7' class='text-center'>No hay aprendices registrados.</td></tr>";
                             }
                             ?>
                         </tbody>
                     </table>
+
+                    <div class="text-center mt-4">
+                        <a href="../../index.php" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Regresar
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Incluir los scripts de Bootstrap al final -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
 <?php
-require_once("c://laragon/www/CRUD_APRENDICES/Views/head/footer.php"); // Incluir el archivo de pie de página
+
+require_once("c://laragon/www/CRUD_APRENDICES/Views/head/footer.php");
+
 ?>
