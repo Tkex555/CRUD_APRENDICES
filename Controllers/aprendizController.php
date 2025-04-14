@@ -1,47 +1,43 @@
 <?php
 
-class aprendiz {
-    private $conexion;
+class aprendizController {
+    private $model;
 
-    public function __construct($conexion) {
-        $this->conexion = $conexion;
+    public function __construct() {
+        require_once("C:\laragon\www\CRUD_APRENDICES\Models\aprendizModel.php");
+        $this->model = new aprendiz(); 
     }
 
-    public function crearAprendiz($primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $tipo_documento, $numero_documento, $id_tipo_documento, $id_sexo, $id_grupo_sanguineo, $id_factor_sanguineo) {
-        try {
-            $sql = "INSERT INTO aprendices (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, tipo_documento, numero_documento, id_tipo_documento, id_sexo, id_grupo_sanguineo, id_factor_sanguineo) VALUES ('$primer_nombre', '$segundo_nombre', '$primer_apellido', '$segundo_apellido', '$tipo_documento', '$numero_documento', '$id_tipo_documento', '$id_sexo', '$id_grupo_sanguineo', '$id_factor_sanguineo')";
-            $resultado = mysqli_query($this->conexion, $sql);
-
-            if ($resultado) {
-                echo "<script>alert('Registro creado correctamente');</script>";
-                echo "<script>window.location.href='index.php';</script>";
+    public function guardar() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $primer_nombre = $_POST['primer_nombre'];
+            $segundo_nombre = $_POST['segundo_nombre'];
+            $primer_apellido = $_POST['primer_apellido'];
+            $segundo_apellido = $_POST['segundo_apellido'];
+            $fecha_nacimiento = $_POST['fecha_nacimiento'];
+            $documento = $_POST['documento'];
+            $tipo_documento = $_POST['tipo_documento'];
+            $sexo = $_POST['sexo'];
+            $grupo_sanguineo = $_POST['grupo_sanguineo'];
+            $factor_sanguineo = $_POST['factor_sanguineo'];
+            $id_formacion = $_POST['formacion']; 
+    
+            $id = $this->model->insertar($primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $fecha_nacimiento, $tipo_documento, $documento, $sexo, $grupo_sanguineo, $factor_sanguineo, $id_formacion);
+    
+            if ($id != false) {
+                echo "<div class='alert alert-success' style='margin: 20px;'>✅ ¡Aprendiz agregado correctamente!</div>";
+                echo "<a href='/CRUD_APRENDICES/index.php' class='btn btn-primary' style='margin: 20px;'>Volver al inicio</a>";
             } else {
-                throw new Exception('Error al crear el registro');
+                echo "<div class='alert alert-danger' style='margin: 20px;'>❌ Error al agregar el aprendiz.</div>";
+                echo "<a href='/CRUD_APRENDICES/index.php' class='btn btn-secondary' style='margin: 20px;'>Volver al inicio</a>";
             }
-        } catch (Exception $e) {
-            echo "<script>alert('" . $e->getMessage() . "');</script>";
-            echo "<script>window.location.href='index.php';</script>";
-        }
-    }
-
-    public function obtenerAprendices() {
-        try {
-            $sql = "SELECT 
-                        aprendices.id AS id_aprendiz,
-                        personas.primer_nombre,
-                        personas.segundo_nombre,
-                        personas.primer_apellido,
-                        personas.segundo_apellido,
-                        personas.id AS id_persona
-                    FROM aprendices
-                    INNER JOIN personas ON aprendices.id_persona = personas.id";
             
-            $resultado = mysqli_query($this->conexion, $sql);
-            return $resultado;
-        } catch (Exception $e) {
-            echo "<script>alert('Error al obtener los registros: " . $e->getMessage() . "');</script>";
-            return false;
         }
     }
     
+}
+
+if (isset($_GET['accion']) && $_GET['accion'] === 'guardar') {
+    $controller = new aprendizController();
+    $controller->guardar();
 }
