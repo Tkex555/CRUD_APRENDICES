@@ -95,7 +95,7 @@ AUTO_INCREMENT=5
 
 
 
-/*tabla aprendeices*/
+/*tabla aprendices*/
 CREATE TABLE `aprendices` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
 	`id_persona` INT(10) NOT NULL,
