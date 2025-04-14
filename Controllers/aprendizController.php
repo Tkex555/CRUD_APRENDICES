@@ -1,67 +1,80 @@
-    <?php
-    class aprendizController {
-        private $model;
+<?php
+class aprendizController {
+    private $model;
 
-        public function __construct() {
-            require_once("C://laragon//www//CRUD_APRENDICES//Models//aprendizModel.php");
-            $this->model = new aprendiz(); 
-        }
+    public function __construct() {
+        require_once("C://laragon//www//CRUD_APRENDICES//Models//aprendizModel.php");
+        $this->model = new aprendiz(); 
+    }
 
-        public function guardar() {
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                $primer_nombre = $_POST['primer_nombre'];
-                $segundo_nombre = $_POST['segundo_nombre'];
-                $primer_apellido = $_POST['primer_apellido'];
-                $segundo_apellido = $_POST['segundo_apellido'];
-                $fecha_nacimiento = $_POST['fecha_nacimiento'];
-                $documento = $_POST['documento'];
-                $tipo_documento = $_POST['tipo_documento'];
-                $sexo = $_POST['sexo'];
-                $grupo_sanguineo = $_POST['grupo_sanguineo'];
-                $factor_sanguineo = $_POST['factor_sanguineo'];
-                $id_formacion = $_POST['formacion']; 
-        
-                $id = $this->model->insertar($primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $fecha_nacimiento, $tipo_documento, $documento, $sexo, $grupo_sanguineo, $factor_sanguineo, $id_formacion);
-        
-                if ($id != false) {
-                    header("Location: /CRUD_APRENDICES/Views/aprendiz/crear.php?success=true");
-                    exit();
-                } else {
-                    header("Location: /CRUD_APRENDICES/Views/aprendiz/crear.php?success=false");
-                    exit();
-                }
-            }
-        }
+    public function guardar() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $primer_nombre = $_POST['primer_nombre'];
+            $segundo_nombre = $_POST['segundo_nombre'];
+            $primer_apellido = $_POST['primer_apellido'];
+            $segundo_apellido = $_POST['segundo_apellido'];
+            $fecha_nacimiento = $_POST['fecha_nacimiento'];
+            $documento = $_POST['documento'];
+            $tipo_documento = $_POST['tipo_documento'];
+            $sexo = $_POST['sexo'];
+            $grupo_sanguineo = $_POST['grupo_sanguineo'];
+            $factor_sanguineo = $_POST['factor_sanguineo'];
+            $id_formacion = $_POST['formacion']; 
 
-        public function actualizar() {
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                $id = $_POST['id'];
-                $primer_nombre = $_POST['primer_nombre'];
-                $segundo_nombre = $_POST['segundo_nombre'];
-                $primer_apellido = $_POST['primer_apellido'];
-                $segundo_apellido = $_POST['segundo_apellido'];
-                $tipo_documento = $_POST['tipo_documento'];
-                $sexo = $_POST['sexo'];
-        
-                $actualizado = $this->model->actualizar($id, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $tipo_documento, $sexo);
-        
-                if ($actualizado) {
-                    header("Location: /CRUD_APRENDICES/Views/aprendiz/editar.php?id=$id&success=true");
-                    exit();
-                } else {
-                    header("Location: /CRUD_APRENDICES/Views/aprendiz/editar.php?id=$id&success=false");
-                    exit();
-                }
+            $id = $this->model->insertar($primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $fecha_nacimiento, $tipo_documento, $documento, $sexo, $grupo_sanguineo, $factor_sanguineo, $id_formacion);
+
+            if ($id != false) {
+                header("Location: /CRUD_APRENDICES/Views/aprendiz/crear.php?success=true");
+                exit();
+            } else {
+                header("Location: /CRUD_APRENDICES/Views/aprendiz/crear.php?success=false");
+                exit();
             }
         }
     }
 
-    if (isset($_GET['accion']) && $_GET['accion'] === 'guardar') {
-        $controller = new aprendizController();
-        $controller->guardar();
+    public function actualizar() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $id = $_POST['id'];
+            $primer_nombre = $_POST['primer_nombre'];
+            $segundo_nombre = $_POST['segundo_nombre'];
+            $primer_apellido = $_POST['primer_apellido'];
+            $segundo_apellido = $_POST['segundo_apellido'];
+            $tipo_documento = $_POST['tipo_documento'];
+            $sexo = $_POST['sexo'];
+
+            $actualizado = $this->model->actualizar($id, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $tipo_documento, $sexo);
+
+            if ($actualizado) {
+                header("Location: /CRUD_APRENDICES/Views/aprendiz/editar.php?id=$id&success=true");
+                exit();
+            } else {
+                header("Location: /CRUD_APRENDICES/Views/aprendiz/editar.php?id=$id&success=false");
+                exit();
+            }
+        }
     }
 
-    if (isset($_GET['accion']) && $_GET['accion'] === 'actualizar') {
-        $controller = new aprendizController();
-        $controller->actualizar();
+    public function eliminar() {
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $resultado = $this->model->eliminar($id);
+            echo json_encode(['success' => $resultado]);
+        }
     }
+}
+
+if (isset($_GET['accion']) && $_GET['accion'] === 'guardar') {
+    $controller = new aprendizController();
+    $controller->guardar();
+}
+
+if (isset($_GET['accion']) && $_GET['accion'] === 'actualizar') {
+    $controller = new aprendizController();
+    $controller->actualizar();
+}
+
+if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
+    $controller = new aprendizController();
+    $controller->eliminar();
+}
