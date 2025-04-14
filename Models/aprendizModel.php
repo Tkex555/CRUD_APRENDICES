@@ -28,8 +28,6 @@ class aprendiz {
             return false; 
         }
     }
-    
-    
 
     public function obtenerPorId($id) {
         try {
@@ -47,6 +45,21 @@ class aprendiz {
             }
         } catch (PDOException $e) {
             return false; 
+        }
+    }
+
+    // Nueva función de actualización
+    public function actualizar($id, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $tipo_documento, $sexo) {
+        try {
+            // Actualizar los datos en la tabla "personas"
+            $sql_persona = "UPDATE personas SET primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?, id_tipo_documento = ?, id_sexo = ? WHERE id = ?";
+            $stmt = $this->PDO->prepare($sql_persona);
+            $stmt->execute([$primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $tipo_documento, $sexo, $id]);
+
+            return true; // Indicar que la actualización fue exitosa
+        } catch (PDOException $e) {
+            error_log("Error en la actualización: " . $e->getMessage());
+            return false; // Si ocurre algún error, devolver falso
         }
     }
 }

@@ -29,7 +29,6 @@ $contador = 1;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SENA || Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- CDN de FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -38,12 +37,6 @@ $contador = 1;
             <div class="row">
                 <div class="col">
                     <h1 class="text-center">Lista de Aprendices</h1>
-                    <div class="text-center mb-3">
-                        <a href="../aprendiz/crear.php" class="btn btn-sm btn-primary">
-                            <i class="fas fa-user-plus"></i> Crear Aprendiz
-                        </a>
-                    </div>
-
                     <table class="table table-sm table-hover table-responsive">
                         <thead>
                             <tr class="text-center">
@@ -75,16 +68,15 @@ $contador = 1;
                                     echo "<td>$nombre</td>";
                                     echo "<td>$edad años</td>";
                                     echo "<td>$programa_formacion</td>";
-                                    // Agregar los iconos a los botones
                                     echo "<td><a href='ver.php?id=$id' class='btn btn-info btn-sm'>
-                                            <i class='fas fa-eye'></i> Ver
+                                            <i class='fas fa-eye'></i>
                                           </a></td>";
                                     echo "<td><a href='editar.php?id=$id' class='btn btn-warning btn-sm'>
-                                            <i class='fas fa-edit'></i> Editar
+                                            <i class='fas fa-edit'></i>
                                           </a></td>";
-                                    echo "<td><a href='delete.php?id=$id' class='btn btn-danger btn-sm'>
-                                            <i class='fas fa-trash-alt'></i> Eliminar
-                                          </a></td>";
+                                    echo "<td><a href='aprendizController.php?accion=eliminar&id=$id' class='btn btn-danger btn-sm'>
+                                          <i class='fas fa-trash-alt'></i>
+                                        </a></td>";
                                     echo "</tr>";
 
                                     $contador++;
@@ -98,7 +90,7 @@ $contador = 1;
 
                     <div class="text-center mt-4">
                         <a href="../../index.php" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Regresar
+                            <i class="fas fa-arrow-left"></i> 
                         </a>
                     </div>
 
@@ -107,7 +99,6 @@ $contador = 1;
         </div>
     </div>
 
-<!-- Incluir los scripts de Bootstrap al final -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
