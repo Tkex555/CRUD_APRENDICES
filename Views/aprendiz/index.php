@@ -1,13 +1,26 @@
 <?php
-include_once 'c://laragon/www/CRUD_APRENDICES/Views/head/head.php'; 
-require_once __DIR__.'/../../Database/conexion.php';
+require_once("c://laragon/www/CRUD_APRENDICES/Views/head/footer.php"); // Incluir el archivo de cabecera
 
-// Establecer la zona horaria de Colombia (UTC-5)
+require_once __DIR__ . '/../../Database/conexion.php'; // Incluir la clase de conexión
+
+// Establecer la zona horaria de Colombia
 date_default_timezone_set('America/Bogota');
 
-// Obtener los aprendices desde la base de datos
-$query = "SELECT * FROM aprendices";  // Asegúrate de usar la tabla correcta
-$aprendices = mysqli_query($conexion, $query);
+// Crear instancia de la clase db y obtener la conexión
+$db = new db();
+$conexion = $db->conexion();
+
+// Verificar si la conexión fue exitosa
+if ($conexion === null) {
+    die("Error de conexión a la base de datos.");
+}
+
+// Realizar la consulta a la base de datos
+$query = "SELECT a.id, p.primer_nombre, p.primer_apellido, p.fecha_nacimiento, a.formacion 
+          FROM aprendices a
+          JOIN personas p ON a.id_persona = p.id_persona";
+
+$aprendices = $conexion->query($query);
 
 $contador = 1;
 ?>
@@ -42,14 +55,13 @@ $contador = 1;
                         </thead>
                         <tbody>
                             <?php
-                            if ($aprendices && mysqli_num_rows($aprendices) > 0) {
-                                while ($row = mysqli_fetch_assoc($aprendices)) {
-                                    $id = $row['id_aprendiz'];
+                            if ($aprendices && $aprendices->rowCount() > 0) {
+                                while ($row = $aprendices->fetch(PDO::FETCH_ASSOC)) {
+                                    $id = $row['id'];
                                     $nombre = $row['primer_nombre'] . ' ' . $row['primer_apellido'];
                                     $fecha_nacimiento = $row['fecha_nacimiento'] ?? null;
-                                    $programa_formacion = $row['formacion']; // Ajusta este campo si es necesario
+                                    $programa_formacion = $row['formacion'];
 
-                                    // Calcular edad
                                     if ($fecha_nacimiento) {
                                         $obj = new DateTime($fecha_nacimiento);
                                         $hoy = new DateTime();
@@ -73,9 +85,6 @@ $contador = 1;
                             } else {
                                 echo "<tr><td colspan='6' class='text-center'>No hay aprendices registrados.</td></tr>";
                             }
-
-                            // Cerrar conexión
-                            mysqli_close($conexion);
                             ?>
                         </tbody>
                     </table>
@@ -89,5 +98,5 @@ $contador = 1;
 </html>
 
 <?php
-require_once("c://laragon/www/CRUD_APRENDICES/Views/head/head.php");
+require_once("c://laragon/www/CRUD_APRENDICES/Views/head/footer.php"); // Incluir el archivo de pie de página
 ?>
