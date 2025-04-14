@@ -9,11 +9,11 @@ class db {
     public function conexion() {
         try {
             $PDO = new PDO("mysql:host=".$this->host.";dbname=".$this->dbname, $this->user, $this->password);
-            $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Aseguramos que los errores se muestren
+            $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
             return $PDO;
         } catch(PDOException $e) {
-            error_log("Error de conexión: " . $e->getMessage()); // Log del error de conexión
-            return null; // Devuelve null si no se puede conectar
+            error_log("Error de conexión: " . $e->getMessage()); 
+            return null; 
         }
     }
 }

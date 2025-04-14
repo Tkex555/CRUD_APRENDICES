@@ -41,7 +41,6 @@ if (isset($_GET['id'])) {
     <?php if ($aprendiz): ?>
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <!-- Contenedor para mostrar la información del aprendiz -->
                 <div class="mb-3">
                     <div class="d-flex justify-content-between mb-3">
                         <strong>Primer Nombre:</strong>
